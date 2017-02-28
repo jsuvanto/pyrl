@@ -61,10 +61,6 @@ class Level(object):
     def get_creature_spawn_list(self):
         creature_list = []
         for creature in creatures:
-            start = creature.speciation_lvl
-            if start <= self.danger_level:
-                weight_coeff = self.danger_level - creature.speciation_lvl
-                creature_list.extend((creature, ) * weight_coeff)
         return creature_list
 
     def finalize(self, level_key):

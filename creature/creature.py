@@ -7,11 +7,11 @@ from dice import Dice
 @ensure_stats
 class Creature(object):
 
-    def __init__(self, name, char, speciation_lvl=0, extinction_lvl=0, coord=None):
+    def __init__(self, name, char, danger_level=0, base_spawn_weight=10, coord=None):
         self.name = name
         self.char = char
-        self.speciation_lvl = speciation_lvl
-        self.extinction_lvl = extinction_lvl
+        self.danger_level = danger_level
+        self.base_spawn_weight = base_spawn_weight
         self.coord = coord
 
         self.level = None
@@ -45,6 +45,14 @@ class Creature(object):
 
     def copy(self):
         return deepcopy(self)
+
+    def get_spawn_weight(self, external_danger_level):
+        diff = external_danger_level - self.danger_level
+        if diff < 0:
+            weight = (1 + diff / 4) * self.spawn_weight
+        else:
+            weight = self.base_spawn_weight - diff
+        return max(0, round(weight))
 
     @property
     def strength(self):
